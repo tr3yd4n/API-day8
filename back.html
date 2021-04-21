@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
+
+    <title>Back OFfice!</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">CRUD Control</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" href="./index.html">Home</a>
+                <a class="nav-link active" href="#">Back Office <span class="sr-only">(current)</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10 col-md-6 mx-auto">
+                <h1 class="text-center my-5">Back Office</h1>
+
+                <form onsubmit="postData(event)">
+                    <label class="ml-2" for="name">Name</label>
+                    <input id="name" type="text" class="form-control mb-2" placeholder="Name..." />
+
+                    <label class="ml-2" for="description">Description</label>
+                    <input id="description" type="text" class="form-control mb-2" placeholder="Description..." />
+
+                    <label class="ml-2" for="brand">Brand</label>
+                    <input id="brand" type="text" class="form-control mb-2" placeholder="Brand..." />
+
+                    <label class="ml-2" for="imageUrl">Image URL</label>
+                    <input id="imageUrl" type="url" class="form-control mb-2" placeholder="Image URL..." />
+
+                    <label class="ml-2" for="price">Price</label>
+                    <input id="price" type="number" class="form-control mb-2" placeholder="Price..." step="0.01" />
+
+                    <div class="d-flex">
+                        <input type="submit" class="btn btn-primary w-50 mx-auto" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const endpoint = "https://striveschool-api.herokuapp.com/api/product/"
+
+        const postData = async event => {
+            event.preventDefault()
+
+            const userData = {
+                name: document.getElementById("name").value,
+                description: document.getElementById("description").value,
+                price: document.getElementById("price").value,
+                brand: document.getElementById("brand").value,
+                imageUrl: document.getElementById("imageUrl").value
+            }
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: "POST", // "GET", "POST", "PUT", "DELETE"
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgwMjQzNmIxZjBmYjAwMTVkOTE3YTIiLCJpYXQiOjE2MTkwMTA2MTUsImV4cCI6MTYyMDIyMDIxNX0.-rwSc8Gk_64U_7ib3Pcd3QYidEAOVZaH9Ceb2MTADGs"
+                    },
+                    body: JSON.stringify(userData)
+                })
+
+                if (!response.ok) throw new Error(`${postData.name} failed`)
+
+                const data = await response.json()
+                console.log("Event added successfully with id " + data._id)
+            } catch (error) {
+                console.error(error.message)
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

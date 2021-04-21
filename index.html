@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
+
+    <title>Front Page</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">CRUD Control</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="./back.html">Back Office</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10 col-md-6 mx-auto">
+                <h1 class="text-center my-5">All the products!</h1>
+                <ul id="event-list" class="list-group">
+                    <!-- Event List Entrypoint -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const parent = document.getElementById("event-list")
+        const endpoint = "https://striveschool-api.herokuapp.com/api/product/"
+
+        window.onload = async () => {
+            try {
+                const data = await loadData()
+                displayEvents(data)
+            } catch (error) {
+                console.error(`Failed on ${window.onload.name} with error ${error.message}`)
+            }
+        }
+
+        const loadData = async () => {
+            try {
+                const response = await fetch(endpoint, {
+                    headers: {
+                        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDgwMjQzNmIxZjBmYjAwMTVkOTE3YTIiLCJpYXQiOjE2MTkwMTA2MTUsImV4cCI6MTYyMDIyMDIxNX0.-rwSc8Gk_64U_7ib3Pcd3QYidEAOVZaH9Ceb2MTADGs"
+                    }
+                })
+                if (!response.ok) throw new Error(`${loadData.name} failed to load from ${endpoint}`)
+                return await response.json()
+            } catch (error) {
+                console.error(`Failed on ${loadData.name} with error ${error.message}`)
+            }
+        }
+
+        const displayEvents = events => {
+            parent.innerHTML = ""
+            for (let event of events) {
+                parent.innerHTML += `
+                    <li class="d-flex list-group-item">
+                        <span>${event.name}</span>
+                        <span class="ml-auto">$${event.price}</span>
+                    </li>`
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
